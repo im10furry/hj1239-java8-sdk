@@ -30,7 +30,7 @@ This branch is the **Java 8 compatible edition**, fully API-compatible with the 
 ```xml
 <dependency>
     <groupId>io.darkinno</groupId>
-    <artifactId>hj1239-sdk</artifactId>
+    <artifactId>hj1239-sdk-java8</artifactId>
     <version>1.1.0</version>
 </dependency>
 ```
