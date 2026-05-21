@@ -35,6 +35,25 @@ This branch is the **Java 8 compatible edition**, fully API-compatible with the 
 </dependency>
 ```
 
+> Published to **GitHub Packages**. Configure `~/.m2/settings.xml`:
+>
+> ```xml
+> <server>
+>     <id>github</id>
+>     <username>YOUR_USERNAME</username>
+>     <password>YOUR_GITHUB_TOKEN</password>
+> </server>
+> ```
+>
+> And add the repository:
+>
+> ```xml
+> <repository>
+>     <id>github</id>
+>     <url>https://maven.pkg.github.com/DarkInno/hj1239-java8-sdk</url>
+> </repository>
+> ```
+
 ### Gradle
 
 ```groovy

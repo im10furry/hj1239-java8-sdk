@@ -86,7 +86,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/im10furry/hj1239-java8-sdk</url>
+            <url>https://maven.pkg.github.com/DarkInno/hj1239-java8-sdk</url>
         </repository>
     </distributionManagement>
 
