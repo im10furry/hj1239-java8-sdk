@@ -263,4 +263,44 @@ class ExtendedMessageTest {
         assertThat(PacketDecoder.isResponse(dec)).isFalse();
         assertThat(PacketDecoder.getCommandType(dec)).isEqualTo(DataType.REALTIME_DATA);
     }
+
+    @Test
+    void shouldRoundTripAsciiPlateNumber() {
+        VehicleInfo vi = VehicleInfo.builder()
+                .vin(VIN).fuelType(FuelType.DIESEL)
+                .emissionStandard(EmissionStandard.CHINA_VI_B)
+                .plateNumber("BJ12345").plateColor("BLUE")
+                .manufacturer("DFM").model("TianLong")
+                .modelYear(2024)
+                .build();
+
+        byte[] enc = PacketEncoder.encodeVehicleLogin(vi, 0);
+        DataPacket dec = PacketDecoder.decode(enc);
+        VehicleInfo out = PacketDecoder.decodeVehicleLogin(dec);
+
+        assertThat(out.getPlateNumber()).isEqualTo("BJ12345");
+        assertThat(out.getPlateColor()).isEqualTo("BLUE");
+    }
+
+    @Test
+    void shouldDemonstrateChinesePlateCorruptedByIso88591() {
+        VehicleInfo vi = VehicleInfo.builder()
+                .vin(VIN).fuelType(FuelType.DIESEL)
+                .emissionStandard(EmissionStandard.CHINA_VI_B)
+                .plateNumber("京A12345").plateColor("1")
+                .manufacturer("东风").model("天龙")
+                .modelYear(2024)
+                .build();
+
+        byte[] enc = PacketEncoder.encodeVehicleLogin(vi, 0);
+        DataPacket dec = PacketDecoder.decode(enc);
+        VehicleInfo out = PacketDecoder.decodeVehicleLogin(dec);
+
+        assertThat(out.getPlateNumber())
+                .as("Chinese plate should round-trip correctly but ISO_8859_1 corrupts it")
+                .isNotEqualTo("京A12345");
+        assertThat(out.getPlateNumber())
+                .as("Each multi-byte Chinese char replaced by '?' (0x3F)")
+                .isEqualTo("?A12345");
+    }
 }
